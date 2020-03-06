@@ -1,0 +1,16 @@
+{
+  "name": "mattferris/dependency-resolver",
+  "description": "A dependency resolver library",
+  "license": "BSD-2-Clause",
+  "autoload": {
+    "psr-4": {
+      "MattFerris\\DependencyResolver\\": "src/"
+    }
+  },
+  "require": {
+    "phpunit/phpunit": "~9.0"
+  },
+  "authors": [
+    { "name": "Matt Ferris", "email": "matt@bueller.ca" }
+  ]
+}
