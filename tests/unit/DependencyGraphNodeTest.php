@@ -31,5 +31,29 @@ class DependencyGraphNodeTest extends TestCase
         $this->assertEquals(['bar' => $barNode], $fooNode->getDependencies());
         $this->assertEquals(['foo' => $fooNode], $barNode->getDependents());
     }
+
+    /**
+     * @depends testDependsOn
+     */
+    public function testSatisfy() {
+        $fooNode = new DependencyGraphNode('foo');
+        $barNode = new DependencyGraphNode('bar');
+        $fooNode->dependsOn($barNode);
+        $fooNode->satisfy($barNode);
+
+        $this->assertTrue($fooNode->isSatisfied());
+    }
+
+    /**
+     * @depends testSatisfy
+     */
+    public function testActivate() {
+        $fooNode = new DependencyGraphNode('foo');
+        $barNode = new DependencyGraphNode('bar');
+        $fooNode->dependsOn($barNode);
+        $barNode->activate();
+
+        $this->assertTrue($fooNode->isSatisfied());
+    }
 }
 

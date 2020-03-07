@@ -49,6 +49,7 @@ class DependencyGraph implements DependencyGraphInterface
         $dependents = $node->getDependents();
         foreach ($dependents as $obj => $dep) {
             if (!isset($next[$obj]) && !isset($stack[$obj])) {
+                $node->activate();
                 $next[$obj] = $dep;
             }
         }
@@ -67,6 +68,10 @@ class DependencyGraph implements DependencyGraphInterface
         }
 
         while (($node = array_shift($next)) !== null) {
+            if (!$node->isSatisfied()) {
+                array_push($next, $node);
+                continue;
+            }
             $this->prepare($node, $stack, $next);
         }
 

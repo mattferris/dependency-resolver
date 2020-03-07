@@ -18,6 +18,7 @@ class DependencyGraphNode
     protected $object;
     protected $dependsOn = [];
     protected $dependents = [];
+    protected $satisfied = [];
 
     public function __construct($object, array $dependencies = []) {
         $this->object = $object;
@@ -40,6 +41,30 @@ class DependencyGraphNode
             return;
         }
         $this->dependents[$node->getObject()] = $node;
+    }
+
+    public function satisfy(DependencyGraphNode $node) {
+        if (!isset($this->dependsOn[$node->getObject()])) {
+            throw new DependencyNotDefinedException($this, $node);
+        }
+        if (!isset($this->satisfied[$node->getObject()])) {
+            $this->satisfied[$node->getObject()] = true;
+        }
+    }
+
+    public function isSatisfied() {
+        foreach (array_keys($this->dependsOn) as $dep) {
+            if (!isset($this->satisfied[$dep])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function activate() {
+        foreach ($this->dependents as $dep) {
+            $dep->satisfy($this);
+        }
     }
 
     public function getObject() {
