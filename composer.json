@@ -7,7 +7,7 @@
       "MattFerris\\DependencyResolver\\": "src/"
     }
   },
-  "require": {
+  "require-dev": {
     "phpunit/phpunit": "~9.0"
   },
   "authors": [
